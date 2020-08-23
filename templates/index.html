@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: arial;
+            margin: 20px;
+        }
+        td {padding: 10px;}
+        .bullish {background: green; color: white;}
+        .bearish {background: red; color:white;}
+    </style>
+
+    <link rel="stylesheet" href="css/style.css">
+    <title>Candlestick Screener</title>
+</head>
+<body>
+    <h1>Candlestick Screener</h1>
+    <form action="">
+        <select name="pattern" id="">
+            {% for pattern in patterns%}
+            <option value="{{pattern}}" {% if pattern == current_pattern %} selected = "selected" {% endif %}>{{patterns[pattern]}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="scan">
+    </form>
+    <table>
+        <th>
+            symbol
+        </th>
+        <th>
+            company name
+        </th>
+        <th>
+            signal
+        </th>
+        {% for stock in stocks %}
+            {% if stocks[stock][current_pattern] %}
+            <tr>  
+                <td>{{ stock }}</td>
+                <td>{{ stocks[stock]['company'] }}</td>
+                <td class = "{{ stocks[stock][current_pattern] }}">{{ stocks[stock][current_pattern] }}</td>
+            </tr>
+            <tr>
+                <td colspan="3"> <img src="https://finviz.com/chart.ashx?t={{ stock }}&ty=c&ta=1&p=d&s=l" alt=""></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+</body>
+</html>
+
